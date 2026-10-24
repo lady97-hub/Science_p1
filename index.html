@@ -1,0 +1,752 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>우리 반 AI 사용 약속 만들기 | AI·디지털 시민 수업</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Lucide Icons -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Google Fonts (Noto Sans KR) -->
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;500;700;900&display=swap" rel="stylesheet">
+    
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        brand: {
+                            50: '#f0fdfa',
+                            100: '#ccfbf1',
+                            500: '#14b8a6',
+                            600: '#0d9488',
+                            700: '#0f766e',
+                            800: '#115e59',
+                        },
+                        school: {
+                            yellow: '#FEF08A',
+                            green: '#BBF7D0',
+                            blue: '#BFDBFE',
+                            purple: '#E9D5FF',
+                            orange: '#FED7AA'
+                        }
+                    },
+                    fontFamily: {
+                        sans: ['Noto Sans KR', 'sans-serif'],
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        body {
+            font-family: 'Noto Sans KR', sans-serif;
+            background-color: #F8FAFC;
+        }
+        .printable-area {
+            display: block;
+        }
+        @media print {
+            body * {
+                visibility: hidden;
+            }
+            #printable-charter, #printable-charter * {
+                visibility: visible;
+            }
+            #printable-charter {
+                position: absolute;
+                left: 0;
+                top: 0;
+                width: 100%;
+                padding: 20px;
+                background: white;
+            }
+            .no-print {
+                display: none !important;
+            }
+        }
+        .card-shadow {
+            box-shadow: 0 10px 25px -5px rgba(15, 118, 110, 0.08), 0 8px 10px -6px rgba(15, 118, 110, 0.04);
+        }
+    </style>
+</head>
+<body class="text-slate-800 antialiased min-h-screen flex flex-col justify-between">
+
+    <!-- Navbar -->
+    <header class="bg-gradient-to-r from-teal-700 via-teal-600 to-emerald-600 text-white shadow-lg sticky top-0 z-50 no-print">
+        <div class="max-w-6xl mx-auto px-4 py-3 flex flex-wrap justify-between items-center gap-3">
+            <div class="flex items-center space-x-3">
+                <span class="bg-white/20 text-white p-2 rounded-xl text-xl flex items-center justify-center font-black">F</span>
+                <div>
+                    <h1 class="font-extrabold text-lg sm:text-xl tracking-tight flex items-center gap-2">
+                        <span>🤖 우리 반 AI 약속 정하기</span>
+                        <span class="text-xs font-medium bg-teal-800/60 px-2 py-0.5 rounded-full text-teal-200">사회·도덕·국어 연계</span>
+                    </h1>
+                    <p class="text-xs text-teal-100 hidden sm:block">모두에게 공정한 AI, 우리가 만드는 더 나은 디지털 세상</p>
+                </div>
+            </div>
+
+            <!-- Tab Navigation Buttons -->
+            <nav class="flex items-center gap-1 sm:gap-2 bg-teal-800/40 p-1.5 rounded-2xl border border-teal-500/30 text-sm">
+                <button onclick="switchTab('propose')" id="nav-propose" class="tab-btn px-3 py-1.5 rounded-xl font-bold transition flex items-center gap-1.5 bg-white text-teal-800 shadow-sm">
+                    <i class="fa-solid fa-pen-to-square"></i>
+                    <span>약속 제안</span>
+                </button>
+                <button onclick="switchTab('vote')" id="nav-vote" class="tab-btn px-3 py-1.5 rounded-xl font-bold transition flex items-center gap-1.5 text-white hover:bg-white/10">
+                    <i class="fa-solid fa-check-to-slot"></i>
+                    <span>투표하기</span>
+                    <span id="vote-badge" class="bg-amber-400 text-slate-900 text-xs px-1.5 py-0.2 rounded-full font-black hidden">0</span>
+                </button>
+                <button onclick="switchTab('board')" id="nav-board" class="tab-btn px-3 py-1.5 rounded-xl font-bold transition flex items-center gap-1.5 text-white hover:bg-white/10">
+                    <i class="fa-solid fa-award"></i>
+                    <span>최종 약속 게시판</span>
+                </button>
+                <button onclick="switchTab('github')" id="nav-github" class="tab-btn px-3 py-1.5 rounded-xl font-bold transition flex items-center gap-1.5 text-amber-200 hover:bg-white/10">
+                    <i class="fa-brands fa-github text-lg"></i>
+                    <span class="hidden md:inline">깃허브 연결</span>
+                </button>
+            </nav>
+        </div>
+    </header>
+
+    <!-- Sub Header: Class Mission & Essential Question -->
+    <section class="bg-teal-50 border-b border-teal-100 py-3 px-4 no-print">
+        <div class="max-w-6xl mx-auto flex flex-col md:flex-row md:items-center justify-between gap-2 text-xs sm:text-sm">
+            <div class="flex items-center gap-2 text-teal-900 font-medium">
+                <span class="bg-teal-200 text-teal-800 font-bold px-2 py-0.5 rounded">핵심 질문</span>
+                <span>모두가 AI의 혜택을 고르게 누리려면 무엇을 함께 정해야 할까?</span>
+            </div>
+            <div class="flex items-center gap-2 text-slate-600">
+                <span class="bg-emerald-200 text-emerald-800 font-bold px-2 py-0.5 rounded">평가 미션</span>
+                <span>우리 반 AI 사용 약속을 제안하고 토의로 합의하기</span>
+            </div>
+        </div>
+    </section>
+
+    <!-- Main Content Container -->
+    <main class="max-w-6xl mx-auto px-4 py-6 flex-grow w-full">
+
+        <!-- TAB 1: 약속 제안하기 (Propose Rule) -->
+        <div id="tab-propose" class="tab-content space-y-6">
+            <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+                <!-- Proposal Form -->
+                <div class="lg:col-span-2 bg-white rounded-3xl p-6 border border-slate-200 card-shadow">
+                    <div class="flex items-center gap-3 mb-6 pb-4 border-b border-slate-100">
+                        <div class="w-10 h-10 rounded-2xl bg-teal-100 text-teal-700 flex items-center justify-center font-bold text-xl">
+                            <i class="fa-solid fa-lightbulb"></i>
+                        </div>
+                        <div>
+                            <h2 class="text-xl font-bold text-slate-800">새로운 AI 사용 약속 제안하기</h2>
+                            <p class="text-xs text-slate-500">우리 반 모두에게 공정하고 안전한 AI 사용 규칙을 적어주세요.</p>
+                        </div>
+                    </div>
+
+                    <form id="proposal-form" onsubmit="handleProposalSubmit(event)" class="space-y-4">
+                        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                            <div>
+                                <label class="block text-xs font-bold text-slate-700 mb-1">제안자 이름 / 모둠</label>
+                                <input type="text" id="author" required placeholder="예: 3모둠 김민준" class="w-full px-3.5 py-2.5 rounded-xl border border-slate-300 focus:ring-2 focus:ring-teal-500 focus:border-teal-500 text-sm outline-none">
+                            </div>
+                            <div>
+                                <label class="block text-xs font-bold text-slate-700 mb-1">약속 영역 카테고리</label>
+                                <select id="category" required class="w-full px-3.5 py-2.5 rounded-xl border border-slate-300 focus:ring-2 focus:ring-teal-500 focus:border-teal-500 text-sm outline-none bg-white">
+                                    <option value="공정한 기회 및 접근">⚖️ 공정한 기회 및 접근</option>
+                                    <option value="출처 밝히기 및 정직성">✍️ 출처 밝히기 및 정직성</option>
+                                    <option value="개인정보 및 저작권 보호">🔒 개인정보 및 저작권 보호</option>
+                                    <option value="올바른 언어 및 비판적 사고">💡 올바른 언어 및 비판적 사고</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <div>
+                            <label class="block text-xs font-bold text-slate-700 mb-1">제안할 약속 내용 (한 문장으로 명확히)</label>
+                            <input type="text" id="rule-title" required placeholder="예: AI가 만든 글이나 그림을 제출할 때는 출처를 반드시 표기한다." class="w-full px-3.5 py-2.5 rounded-xl border border-slate-300 focus:ring-2 focus:ring-teal-500 focus:border-teal-500 text-sm outline-none font-medium text-teal-900">
+                        </div>
+
+                        <div>
+                            <label class="block text-xs font-bold text-slate-700 mb-1">제안 이유 및 배경 (토의에 도움이 되는 이유)</label>
+                            <textarea id="rule-reason" rows="3" required placeholder="이 약속이 필요한 이유나 AI 사용 중 겪었던 어려움을 함께 작성해주세요." class="w-full px-3.5 py-2.5 rounded-xl border border-slate-300 focus:ring-2 focus:ring-teal-500 focus:border-teal-500 text-sm outline-none resize-none"></textarea>
+                        </div>
+
+                        <div class="pt-2">
+                            <button type="submit" class="w-full bg-teal-600 hover:bg-teal-700 text-white font-bold py-3 px-4 rounded-xl shadow-md transition flex items-center justify-center gap-2">
+                                <i class="fa-solid fa-paper-plane"></i>
+                                <span>우리 반에 약속 제안 등록하기</span>
+                            </button>
+                        </div>
+                    </form>
+                </div>
+
+                <!-- Learning Helper Card -->
+                <div class="space-y-4">
+                    <div class="bg-amber-50 rounded-3xl p-5 border border-amber-200">
+                        <h3 class="font-bold text-amber-900 flex items-center gap-2 text-sm mb-2">
+                            <i class="fa-solid fa-compass text-amber-600"></i>
+                            수업 흐름 가이드
+                        </h3>
+                        <ol class="text-xs text-amber-800 space-y-2 list-decimal list-inside leading-relaxed">
+                            <li><strong class="text-amber-950">편향 살피기:</strong> AI 이미지/글의 성별, 직업 편향 탐색</li>
+                            <li><strong class="text-amber-950">어려움 인터뷰:</strong> AI 디지털 소외 친구들 이야기 듣기</li>
+                            <li><strong class="text-amber-950">조건 정리:</strong> 누구나 고르게 누리는 조건 만들기</li>
+                            <li><strong class="text-amber-950">약속 제안·투표:</strong> 이 앱에서 투표로 학급 약속 합의!</li>
+                        </ol>
+                    </div>
+
+                    <div class="bg-indigo-50 rounded-3xl p-5 border border-indigo-100">
+                        <h3 class="font-bold text-indigo-900 flex items-center gap-2 text-sm mb-2">
+                            <i class="fa-solid fa-seedling text-indigo-600"></i>
+                            좋은 약속의 예시
+                        </h3>
+                        <ul class="text-xs text-indigo-800 space-y-1.5 list-disc list-inside">
+                            <li>컴퓨터 사용 시간을 서로 배려하여 양보해요.</li>
+                            <li>AI 답을 그대로 복사하지 않고 내 생각으로 다듬어요.</li>
+                            <li>친구나 나의 개인정보를 AI 질문창에 입력하지 않아요.</li>
+                            <li>AI 생성물의 사실 여부를 한 번 더 확인해요.</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Recent Proposals Overview -->
+            <div class="mt-8">
+                <div class="flex justify-between items-center mb-4">
+                    <h3 class="font-bold text-slate-800 text-lg flex items-center gap-2">
+                        <i class="fa-solid fa-list-check text-teal-600"></i>
+                        <span>현재 등록된 제안 목록</span>
+                        <span id="proposal-count-badge" class="bg-slate-200 text-slate-700 text-xs px-2 py-0.5 rounded-full font-bold">0</span>
+                    </h3>
+                    <button onclick="switchTab('vote')" class="text-xs text-teal-700 hover:text-teal-800 font-bold flex items-center gap-1">
+                        전체 투표하러 가기 <i class="fa-solid fa-arrow-right"></i>
+                    </button>
+                </div>
+                <div id="proposal-preview-list" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+                    <!-- Proposal Cards injected by JS -->
+                </div>
+            </div>
+        </div>
+
+        <!-- TAB 2: 실시간 투표하기 (Vote) -->
+        <div id="tab-vote" class="tab-content hidden space-y-6">
+            <div class="bg-white rounded-3xl p-6 border border-slate-200 card-shadow flex flex-wrap justify-between items-center gap-4">
+                <div>
+                    <h2 class="text-xl font-bold text-slate-800 flex items-center gap-2">
+                        <span>🗳️ 우리 반 AI 약속 실시간 찬반 투표</span>
+                    </h2>
+                    <p class="text-xs text-slate-500 mt-1">학급 토의 후, 각 약속에 찬성 또는 반대 표를 던져주세요. (과반수 찬성 시 학급 약속 확정)</p>
+                </div>
+                <div class="flex items-center gap-2">
+                    <button onclick="filterVote('all')" class="vote-filter-btn px-3 py-1.5 rounded-xl text-xs font-bold bg-teal-600 text-white" id="filter-all">전체보기</button>
+                    <button onclick="filterVote('passed')" class="vote-filter-btn px-3 py-1.5 rounded-xl text-xs font-bold bg-slate-100 text-slate-600 hover:bg-slate-200" id="filter-passed">통과 예정만</button>
+                </div>
+            </div>
+
+            <div id="vote-card-container" class="space-y-4">
+                <!-- Vote cards generated dynamically -->
+            </div>
+        </div>
+
+        <!-- TAB 3: 최종 약속 게시판 (Class AI Charter Board) -->
+        <div id="tab-board" class="tab-content hidden space-y-6">
+            <div class="flex justify-between items-center bg-teal-900 text-white p-6 rounded-3xl shadow-lg no-print flex-wrap gap-4">
+                <div>
+                    <h2 class="text-2xl font-black flex items-center gap-2">
+                        <span>📜 우리 반 최종 AI 사용 선언문</span>
+                    </h2>
+                    <p class="text-xs text-teal-200 mt-1">학급 투표를 통과한 약속들입니다. 우리 교실에 게시하고 함께 지켜나가요!</p>
+                </div>
+                <div class="flex items-center gap-2">
+                    <button onclick="window.print()" class="bg-amber-400 hover:bg-amber-300 text-slate-900 px-4 py-2 rounded-xl text-xs font-bold flex items-center gap-1.5 shadow transition">
+                        <i class="fa-solid fa-print"></i>
+                        <span>선언문 인쇄 / PDF 저장</span>
+                    </button>
+                </div>
+            </div>
+
+            <!-- Printable Charter Area -->
+            <div id="printable-charter" class="bg-white border-4 border-teal-600 rounded-3xl p-8 sm:p-12 shadow-xl relative overflow-hidden">
+                <!-- Decorative Frame Design -->
+                <div class="absolute -top-12 -right-12 w-40 h-40 bg-teal-100 rounded-full opacity-50 pointer-events-none"></div>
+                <div class="absolute -bottom-12 -left-12 w-40 h-40 bg-amber-100 rounded-full opacity-50 pointer-events-none"></div>
+
+                <div class="text-center space-y-3 mb-10 pb-6 border-b-2 border-dashed border-teal-200">
+                    <div class="inline-block bg-teal-100 text-teal-800 text-xs font-extrabold px-3 py-1 rounded-full mb-1">
+                        AI · 디지털 시민 수업 결실
+                    </div>
+                    <h1 class="text-3xl sm:text-4xl font-black text-slate-900 tracking-tight">
+                        ✨ [ 우리 반 AI 사용 약속 선언문 ] ✨
+                    </h1>
+                    <p class="text-sm text-slate-600 max-w-xl mx-auto">
+                        우리는 AI 기술을 공정하고, 정직하며, 안전하게 활용하여 모두 함께 성장하는 행복한 교실을 만들어 갈 것을 약속합니다.
+                    </p>
+                </div>
+
+                <!-- Passed Rules Container -->
+                <div id="charter-rules-list" class="space-y-4 my-8">
+                    <!-- Dynamic passed rules inserted here -->
+                </div>
+
+                <!-- Footer Signatures -->
+                <div class="mt-12 pt-6 border-t border-slate-200 flex flex-col sm:flex-row justify-between items-center text-xs text-slate-500 gap-4">
+                    <div>
+                        <p class="font-bold text-slate-700">작성일: <span id="charter-date">2026년 --월 --일</span></p>
+                        <p>참여: 우리 반 모든 학생 및 선생님</p>
+                    </div>
+                    <div class="text-center sm:text-right border-2 border-dashed border-teal-300 p-3 rounded-2xl bg-teal-50/50">
+                        <p class="font-bold text-teal-900 mb-1">"모두에게 공정한 AI, 우리가 만드는 약속"</p>
+                        <p class="text-[10px] text-teal-700">사회·도덕·국어 프로젝트 학습 결과물</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- TAB 4: GitHub Pages 연결 가이드 (GitHub Integration Guide) -->
+        <div id="tab-github" class="tab-content hidden space-y-6">
+            <div class="bg-white rounded-3xl p-6 border border-slate-200 card-shadow">
+                <div class="flex items-center gap-3 mb-6 pb-4 border-b border-slate-100">
+                    <div class="w-12 h-12 rounded-2xl bg-slate-900 text-white flex items-center justify-center font-bold text-2xl">
+                        <i class="fa-brands fa-github"></i>
+                    </div>
+                    <div>
+                        <h2 class="text-xl font-bold text-slate-800">깃허브(GitHub Pages)에 이 웹앱 무료 배포하기</h2>
+                        <p class="text-xs text-slate-500">학생들과 만든 완성된 앱을 인터넷에 공개하여 언제 어디서나 접속할 수 있습니다.</p>
+                    </div>
+                </div>
+
+                <div class="space-y-6 text-sm text-slate-700">
+                    <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                        <div class="bg-slate-50 p-4 rounded-2xl border border-slate-200 space-y-2">
+                            <span class="bg-teal-600 text-white text-xs font-bold px-2 py-0.5 rounded-full">1단계</span>
+                            <h3 class="font-bold text-slate-900">소스 코드 저장</h3>
+                            <p class="text-xs text-slate-600">이 웹앱 파일의 전체 코드를 복사하여 내 컴퓨터에 <code class="bg-slate-200 px-1 rounded text-pink-600">index.html</code> 이름으로 저장합니다.</p>
+                        </div>
+                        <div class="bg-slate-50 p-4 rounded-2xl border border-slate-200 space-y-2">
+                            <span class="bg-teal-600 text-white text-xs font-bold px-2 py-0.5 rounded-full">2단계</span>
+                            <h3 class="font-bold text-slate-900">GitHub 저장소 생성</h3>
+                            <p class="text-xs text-slate-600">GitHub 로그인 후 <strong>New Repository</strong>를 누르고, 이름을 <code class="bg-slate-200 px-1 rounded text-teal-700">ai-rules-app</code> 으로 입력 후 만듭니다.</p>
+                        </div>
+                        <div class="bg-slate-50 p-4 rounded-2xl border border-slate-200 space-y-2">
+                            <span class="bg-teal-600 text-white text-xs font-bold px-2 py-0.5 rounded-full">3단계</span>
+                            <h3 class="font-bold text-slate-900">Pages 활성화</h3>
+                            <p class="text-xs text-slate-600"><code class="bg-slate-200 px-1 rounded">index.html</code> 업로드 후 <strong>Settings &gt; Pages &gt; Branch: main</strong> 선택 후 Save를 클릭합니다.</p>
+                        </div>
+                    </div>
+
+                    <!-- Export HTML Button & Code Snippet Box -->
+                    <div class="p-4 bg-teal-50 border border-teal-200 rounded-2xl space-y-3">
+                        <div class="flex justify-between items-center">
+                            <h4 class="font-bold text-teal-900 text-sm flex items-center gap-1.5">
+                                <i class="fa-solid fa-file-code text-teal-600"></i>
+                                현재 웹앱 HTML 파일 다운로드 / 복사
+                            </h4>
+                            <button onclick="downloadHTML()" class="bg-teal-600 hover:bg-teal-700 text-white text-xs font-bold px-3 py-1.5 rounded-xl transition flex items-center gap-1">
+                                <i class="fa-solid fa-download"></i> index.html 다운로드
+                            </button>
+                        </div>
+                        <p class="text-xs text-teal-800 leading-relaxed">
+                            다운로드한 <code class="font-bold">index.html</code> 파일을 깃허브 Repository의 [Add file] -> [Upload files]로 업로드하면 약 1~2분 후 <code class="font-bold">https://사용자ID.github.io/ai-rules-app</code> 형태의 학급 웹주소가 생성됩니다.
+                        </p>
+                    </div>
+
+                    <!-- Teacher Tip -->
+                    <div class="p-4 bg-amber-50 border border-amber-200 rounded-2xl text-xs text-amber-900 space-y-1">
+                        <p class="font-bold flex items-center gap-1">
+                            <i class="fa-solid fa-chalkboard-user text-amber-600"></i>
+                            선생님 팁 (Classroom Tip)
+                        </p>
+                        <p>· 데이터는 학생들의 브라우저(LocalStorage)에 저장되므로, 학급 전체 모니터링 시에는 선생님 컴퓨터 화면을 전자칠판에 띄워 함께 투표를 진행하는 방식을 권장합니다.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </main>
+
+    <!-- Footer -->
+    <footer class="bg-slate-100 border-t border-slate-200 py-4 px-4 text-center text-xs text-slate-500 no-print mt-8">
+        <div class="max-w-6xl mx-auto flex flex-col sm:flex-row justify-between items-center gap-2">
+            <p>🤖 AI·디지털 시민 수업 카드 [F-06/06] 사회참여 실습 웹앱</p>
+            <p>교과 연계: 사회 · 도덕 · 국어 | 모두에게 공정한 AI 사용 환경 만들기</p>
+        </div>
+    </footer>
+
+    <!-- Notification Toast -->
+    <div id="toast" class="fixed bottom-5 right-5 bg-slate-900 text-white px-5 py-3 rounded-2xl shadow-2xl transition transform translate-y-20 opacity-0 duration-300 z-50 flex items-center gap-2 text-sm font-bold pointer-events-none">
+        <i class="fa-solid fa-circle-check text-emerald-400"></i>
+        <span id="toast-message">알림 메시지</span>
+    </div>
+
+    <!-- Application Script -->
+    <script>
+        // Sample Initial Data based on Class Ethics Lesson
+        const initialProposals = [
+            {
+                id: 'rule-1',
+                author: '1모둠 김민서',
+                category: '공정한 기회 및 접근',
+                title: '학급 컴퓨터 사용 시간은 모둠별로 공평하게 나누어 사용한다.',
+                reason: '특정 모둠이 컴퓨터를 독점하면 다른 친구들이 AI를 활용해 과제를 할 기회가 부족해지기 때문입니다.',
+                agree: 18,
+                disagree: 1,
+                voted: false
+            },
+            {
+                id: 'rule-2',
+                author: '2모둠 이준우',
+                category: '출처 밝히기 및 정직성',
+                title: 'AI가 써준 글이나 그린 그림을 사용할 때는 반드시 [AI 참고] 표시를 남긴다.',
+                reason: '내가 직접 만든 작품과 AI의 도움을 받은 작품을 솔직하게 구분하는 것이 정직한 디지털 시민의 자세입니다.',
+                agree: 22,
+                disagree: 0,
+                voted: false
+            },
+            {
+                id: 'rule-3',
+                author: '4모둠 박지민',
+                category: '개인정보 및 저작권 보호',
+                title: '친구의 이름, 얼굴 사진, 전화번호 등 개인정보는 절대로 AI 질문창에 넣지 않는다.',
+                reason: 'AI 학습 데이터로 유출되어 친구의 개인정보가 침해될 위험이 있기 때문입니다.',
+                agree: 20,
+                disagree: 2,
+                voted: false
+            }
+        ];
+
+        // Global State Variable
+        let proposals = [];
+
+        // App Initialization
+        window.onload = function() {
+            // Load saved data or set initial data
+            const savedData = localStorage.getItem('class_ai_rules_data');
+            if (savedData) {
+                try {
+                    proposals = JSON.parse(savedData);
+                } catch(e) {
+                    proposals = [...initialProposals];
+                }
+            } else {
+                proposals = [...initialProposals];
+                saveToLocalStorage();
+            }
+
+            // Set current date in charter
+            const today = new Date();
+            const dateStr = `${today.getFullYear()}년 ${today.getMonth() + 1}월 ${today.getDate()}일`;
+            document.getElementById('charter-date').innerText = dateStr;
+
+            // Initial Renders
+            renderProposals();
+            renderVotes();
+            renderCharter();
+            updateVoteBadge();
+            
+            // Initialize Lucide icons if any
+            if(window.lucide) lucide.createIcons();
+        };
+
+        // Save State to LocalStorage
+        function saveToLocalStorage() {
+            localStorage.setItem('class_ai_rules_data', JSON.stringify(proposals));
+        }
+
+        // Show Toast Message
+        function showToast(message) {
+            const toast = document.getElementById('toast');
+            const toastMsg = document.getElementById('toast-message');
+            toastMsg.innerText = message;
+            toast.classList.remove('translate-y-20', 'opacity-0');
+            
+            setTimeout(() => {
+                toast.classList.add('translate-y-20', 'opacity-0');
+            }, 3000);
+        }
+
+        // Switch Tabs Function
+        function switchTab(tabId) {
+            document.querySelectorAll('.tab-content').forEach(el => el.classList.add('hidden'));
+            document.querySelectorAll('.tab-btn').forEach(btn => {
+                btn.classList.remove('bg-white', 'text-teal-800', 'shadow-sm');
+                btn.classList.add('text-white');
+            });
+
+            document.getElementById(`tab-${tabId}`).classList.remove('hidden');
+            const activeBtn = document.getElementById(`nav-${tabId}`);
+            if (activeBtn) {
+                activeBtn.classList.add('bg-white', 'text-teal-800', 'shadow-sm');
+                activeBtn.classList.remove('text-white');
+            }
+
+            if(tabId === 'board') renderCharter();
+            if(tabId === 'vote') renderVotes();
+        }
+
+        // Handle Form Submission
+        function handleProposalSubmit(event) {
+            event.preventDefault();
+
+            const author = document.getElementById('author').value.trim();
+            const category = document.getElementById('category').value;
+            const title = document.getElementById('rule-title').value.trim();
+            const reason = document.getElementById('rule-reason').value.trim();
+
+            if (!author || !title || !reason) {
+                showToast('모든 항목을 입력해주세요!');
+                return;
+            }
+
+            const newProposal = {
+                id: 'rule-' + Date.now(),
+                author: author,
+                category: category,
+                title: title,
+                reason: reason,
+                agree: 1, // Auto-vote agree by author
+                disagree: 0,
+                voted: true
+            };
+
+            proposals.unshift(newProposal);
+            saveToLocalStorage();
+
+            // Reset form
+            document.getElementById('proposal-form').reset();
+
+            renderProposals();
+            renderVotes();
+            updateVoteBadge();
+            showToast('새로운 약속 제안이 등록되었습니다!');
+        }
+
+        // Render Proposal Preview Cards on Tab 1
+        function renderProposals() {
+            const container = document.getElementById('proposal-preview-list');
+            const badge = document.getElementById('proposal-count-badge');
+            badge.innerText = proposals.length;
+
+            if (proposals.length === 0) {
+                container.innerHTML = `
+                    <div class="col-span-full text-center py-8 text-slate-400 bg-white rounded-2xl border border-dashed border-slate-200">
+                        아직 제안된 약속이 없습니다. 첫 번째 약속을 제안해 보세요!
+                    </div>
+                `;
+                return;
+            }
+
+            container.innerHTML = proposals.map(item => `
+                <div class="bg-white p-4 rounded-2xl border border-slate-200 space-y-2 card-shadow hover:border-teal-300 transition flex flex-col justify-between">
+                    <div>
+                        <div class="flex justify-between items-start gap-2 mb-1">
+                            <span class="text-[10px] font-bold px-2 py-0.5 rounded-md bg-teal-50 text-teal-700 border border-teal-200">
+                                ${item.category}
+                            </span>
+                            <span class="text-xs text-slate-400 font-medium">${item.author}</span>
+                        </div>
+                        <h4 class="font-bold text-slate-800 text-sm leading-snug">${item.title}</h4>
+                        <p class="text-xs text-slate-500 mt-2 line-clamp-2">${item.reason}</p>
+                    </div>
+                    <div class="pt-3 border-t border-slate-100 flex justify-between items-center text-xs text-slate-500">
+                        <span>현재 찬성 <strong class="text-teal-600">${item.agree}</strong>표</span>
+                        <button onclick="switchTab('vote')" class="text-teal-700 font-bold hover:underline">투표하기</button>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        // Render Vote Cards on Tab 2
+        function renderVotes(filter = 'all') {
+            const container = document.getElementById('vote-card-container');
+            
+            let list = [...proposals];
+            if (filter === 'passed') {
+                list = list.filter(item => {
+                    const total = item.agree + item.disagree;
+                    return total > 0 && (item.agree / total) >= 0.5;
+                });
+            }
+
+            if (list.length === 0) {
+                container.innerHTML = `
+                    <div class="text-center py-12 bg-white rounded-3xl border border-dashed border-slate-200 text-slate-400">
+                        해당하는 투표 항목이 없습니다.
+                    </div>
+                `;
+                return;
+            }
+
+            container.innerHTML = list.map(item => {
+                const totalVotes = item.agree + item.disagree;
+                const agreeRatio = totalVotes === 0 ? 0 : Math.round((item.agree / totalVotes) * 100);
+                const isPassed = totalVotes > 0 && agreeRatio >= 50;
+
+                return `
+                    <div class="bg-white p-5 sm:p-6 rounded-3xl border ${isPassed ? 'border-teal-300 bg-teal-50/20' : 'border-slate-200'} card-shadow space-y-4">
+                        <div class="flex flex-wrap justify-between items-start gap-2">
+                            <div class="space-y-1">
+                                <div class="flex items-center gap-2">
+                                    <span class="text-xs font-bold px-2.5 py-0.5 rounded-lg bg-teal-100 text-teal-800">
+                                        ${item.category}
+                                    </span>
+                                    <span class="text-xs text-slate-500">제안자: ${item.author}</span>
+                                </div>
+                                <h3 class="text-base sm:text-lg font-bold text-slate-900">${item.title}</h3>
+                            </div>
+                            ${isPassed ? `
+                                <span class="bg-emerald-100 text-emerald-800 text-xs font-extrabold px-3 py-1 rounded-full border border-emerald-300 flex items-center gap-1">
+                                    <i class="fa-solid fa-circle-check"></i> 과반수 통과 (약속 확정)
+                                </span>
+                            ` : `
+                                <span class="bg-slate-100 text-slate-600 text-xs font-bold px-3 py-1 rounded-full">
+                                    토의 및 투표 진행 중
+                                </span>
+                            `}
+                        </div>
+
+                        <!-- Proposal Reason -->
+                        <div class="bg-slate-50 p-3.5 rounded-2xl text-xs text-slate-600 border border-slate-100">
+                            <strong class="text-slate-800 block mb-0.5">💡 제안 이유:</strong>
+                            ${item.reason}
+                        </div>
+
+                        <!-- Progress Bar & Vote Controls -->
+                        <div class="space-y-2 pt-2">
+                            <div class="flex justify-between items-center text-xs font-bold">
+                                <span class="text-teal-700">찬성 ${item.agree}표 (${agreeRatio}%)</span>
+                                <span class="text-rose-600">반대 ${item.disagree}표 (${100 - agreeRatio}%)</span>
+                            </div>
+                            <div class="w-full bg-slate-200 h-3 rounded-full overflow-hidden flex">
+                                <div class="bg-teal-500 transition-all duration-500 h-full" style="width: ${agreeRatio}%"></div>
+                                <div class="bg-rose-400 transition-all duration-500 h-full" style="width: ${100 - agreeRatio}%"></div>
+                            </div>
+                        </div>
+
+                        <!-- Action Buttons -->
+                        <div class="flex items-center justify-end gap-3 pt-2">
+                            <button onclick="castVote('${item.id}', 'agree')" class="px-4 py-2 rounded-xl text-xs font-bold transition flex items-center gap-1.5 ${item.voted ? 'bg-slate-100 text-slate-400 cursor-not-allowed' : 'bg-teal-600 hover:bg-teal-700 text-white shadow-sm'}">
+                                <i class="fa-solid fa-thumbs-up"></i>
+                                <span>찬성표 행사</span>
+                            </button>
+                            <button onclick="castVote('${item.id}', 'disagree')" class="px-4 py-2 rounded-xl text-xs font-bold transition flex items-center gap-1.5 ${item.voted ? 'bg-slate-100 text-slate-400 cursor-not-allowed' : 'bg-rose-100 hover:bg-rose-200 text-rose-700'}">
+                                <i class="fa-solid fa-thumbs-down"></i>
+                                <span>반대표 행사</span>
+                            </button>
+                            <button onclick="deleteProposal('${item.id}')" class="text-xs text-slate-400 hover:text-rose-600 p-2" title="제안 삭제">
+                                <i class="fa-solid fa-trash"></i>
+                            </button>
+                        </div>
+                    </div>
+                `;
+            }).join('');
+        }
+
+        // Vote Action Handler
+        function castVote(id, type) {
+            const target = proposals.find(p => p.id === id);
+            if (!target) return;
+
+            if (type === 'agree') {
+                target.agree += 1;
+            } else if (type === 'disagree') {
+                target.disagree += 1;
+            }
+
+            target.voted = true;
+            saveToLocalStorage();
+            renderVotes();
+            renderCharter();
+            showToast('투표가 반영되었습니다!');
+        }
+
+        // Filter Votes
+        function filterVote(type) {
+            document.querySelectorAll('.vote-filter-btn').forEach(b => {
+                b.classList.remove('bg-teal-600', 'text-white');
+                b.classList.add('bg-slate-100', 'text-slate-600');
+            });
+            document.getElementById(`filter-${type}`).classList.add('bg-teal-600', 'text-white');
+            renderVotes(type);
+        }
+
+        // Render Class AI Charter (Tab 3)
+        function renderCharter() {
+            const container = document.getElementById('charter-rules-list');
+            
+            // Passed rules = agree ratio >= 50% AND at least 1 agree vote
+            const passedRules = proposals.filter(p => {
+                const total = p.agree + p.disagree;
+                return total > 0 && (p.agree / total) >= 0.5;
+            });
+
+            if (passedRules.length === 0) {
+                container.innerHTML = `
+                    <div class="text-center py-12 text-slate-400 border-2 border-dashed border-slate-200 rounded-2xl">
+                        <i class="fa-solid fa-clipboard-question text-3xl mb-2 text-slate-300"></i>
+                        <p class="font-bold text-slate-600">아직 학급 투표를 통과한 약속이 없습니다.</p>
+                        <p class="text-xs mt-1">투표 탭에서 찬성표를 던져 우리 반 약속을 확정해 주세요!</p>
+                    </div>
+                `;
+                return;
+            }
+
+            container.innerHTML = passedRules.map((rule, idx) => `
+                <div class="bg-gradient-to-r from-teal-50 to-emerald-50 p-5 rounded-2xl border border-teal-200 flex items-start gap-4 shadow-sm">
+                    <div class="w-8 h-8 rounded-full bg-teal-600 text-white font-extrabold flex items-center justify-center text-sm flex-shrink-0">
+                        ${idx + 1}
+                    </div>
+                    <div class="space-y-1 flex-grow">
+                        <div class="flex justify-between items-center">
+                            <span class="text-xs font-bold text-teal-800 bg-white px-2.5 py-0.5 rounded-full border border-teal-200">
+                                ${rule.category}
+                            </span>
+                            <span class="text-xs text-slate-500">제안: ${rule.author} (찬성 ${rule.agree}표)</span>
+                        </div>
+                        <h3 class="text-base font-black text-slate-900">${rule.title}</h3>
+                        <p class="text-xs text-slate-600">${rule.reason}</p>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        // Delete Proposal
+        function deleteProposal(id) {
+            if (confirm('이 약속 제안을 삭제하시겠습니까?')) {
+                proposals = proposals.filter(p => p.id !== id);
+                saveToLocalStorage();
+                renderProposals();
+                renderVotes();
+                renderCharter();
+                updateVoteBadge();
+                showToast('제안이 삭제되었습니다.');
+            }
+        }
+
+        // Update Nav Badge
+        function updateVoteBadge() {
+            const badge = document.getElementById('vote-badge');
+            if (proposals.length > 0) {
+                badge.innerText = proposals.length;
+                badge.classList.remove('hidden');
+            } else {
+                badge.classList.add('hidden');
+            }
+        }
+
+        // Download HTML File for Github Pages
+        function downloadHTML() {
+            const htmlContent = document.documentElement.outerHTML;
+            const blob = new Blob([htmlContent], { type: 'text/html' });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = 'index.html';
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+            URL.revokeObjectURL(url);
+            showToast('index.html 파일이 다운로드되었습니다!');
+        }
+    </script>
+</body>
+</html>
